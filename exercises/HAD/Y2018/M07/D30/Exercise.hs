@@ -1,6 +1,7 @@
 module Y2018.M07.D30.Exercise where
 
-import Data.Set (Set)
+import Data.Set (Set, empty, fromList
+                , difference, intersection)
 
 -- We have two databases
 
@@ -18,8 +19,28 @@ entities = "entities_db.csv"
 type Table = String
 type Database = Set Table
 
+readFile' :: FilePath -> IO String
+readFile' fp = readFile ("exercises/HAD/" ++ exDir ++ fp)
+
+readLines' :: FilePath -> IO [String]
+readLines' = fmap lines . readFile' 
+
 readDatabase :: FilePath -> IO Database
-readDatabase file = undefined
+readDatabase fp = do
+  headers <- readLines' fp
+  let tables = drop 2 headers
+  return $ fromList tables
+
+diffTables :: Database -> Database -> Set Table
+diffTables = difference
 
 sharedTables :: Database -> Database -> Set Table
-sharedTables db1 db2 = undefined
+sharedTables = intersection
+
+main = do
+  pilotDb <- readDatabase pilot
+  entityDB <- readDatabase entities
+  let shared = sharedTables pilotDb entityDB
+  print ("diff", diffTables pilotDb entityDB)
+  print ("shared", shared)
+  print ("shared count: ", length shared)
