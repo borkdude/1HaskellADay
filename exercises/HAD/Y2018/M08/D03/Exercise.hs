@@ -1,3 +1,6 @@
+-- cd exercises/HAD
+-- stack ghci
+
 {-# LANGUAGE OverloadedStrings #-}
 
 module Y2018.M08.D03.Exercise where
